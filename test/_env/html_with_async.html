@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>test html</title>
+        <script>
+            var promise_content_rendered = new Promise((resolve, reject)=>{
+                window.addEventListener("load", function(){
+                    window.document.body.appendChild(document.createElement("p"));
+                    window.document.body.appendChild(document.createElement("p"));
+                    window.document.body.appendChild(document.createElement("p"));
+                    resolve(true);
+                })
+            })
+        </script>
+    </head>
+    <body>
+        <p>test<p>
+    </body>
+</html>

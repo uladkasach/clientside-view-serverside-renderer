@@ -1,0 +1,5 @@
+{
+    "protocol" : "http",
+    "host": "shipping.localhost",
+    "port": 80
+}

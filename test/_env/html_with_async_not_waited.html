@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>test html</title>
+        <script>
+            var promise_window_loaded = new Promise((resolve,reject)=>{window.addEventListener("load", resolve)});
+            var promise_not_server_rendered = Promise.resolve();
+            var promise_content_rendered = promise_window_loaded
+                .then(()=>{
+                    window.document.body.appendChild(document.createElement("p"));
+                })
+            promise_not_server_rendered
+                .then(()=>{
+                    window.document.body.appendChild(document.createElement("img"));
+                })
+        </script>
+    </head>
+    <body>
+        <p>test<p>
+    </body>
+</html>
