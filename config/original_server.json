@@ -1,5 +1,5 @@
 {
     "protocol" : "http",
-    "host": "shipping.localhost",
+    "host": "raw.shipping.localhost",
     "port": 80
 }
