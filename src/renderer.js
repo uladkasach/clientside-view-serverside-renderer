@@ -15,13 +15,16 @@ Renderer.prototype = {
             port : this.original_server.port,
             path : path,
         };
-        var body = await this.promise_to_get_body(options)
+        var body = await this.promise_to_get_body(options);
 
         // convert body into dom
         var dom = this.parse_html_into_dom(body, this.original_server);
 
+        // wait untill window is loaded
+        await dom.window.promise_loaded;
+
         // wait untill a specifically named promise resolves
-        await dom.window.promise_server_content_rendered;
+        await dom.window.promise_content_rendered;
 
         // serialize the dom at this point
         var serialization = dom.serialize();
@@ -70,6 +73,9 @@ Renderer.prototype = {
             includeNodeLocations: true, // make script tag console.error reporting positions accurate
             beforeParse : function(window) { // set a global variable to mark that the environment is a server_side_rendering environment
                 window.server_side_rendering = true;
+                window.promise_loaded = new Promise((resolve, reject)=>{ // add a global promise that resolves when window is loaded
+                    window.addEventListener('load', resolve);
+                })
             },
         };
 

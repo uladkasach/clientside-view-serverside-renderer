@@ -139,6 +139,7 @@ describe('utils', function(){
             var dom = parse_html_into_dom(html, options);
             var child_length = dom.window.document.body.children.length;
             assert.equal(child_length, 2, "assert two children exist. should be two <p/> tags")
+            assert(typeof dom.window.promise_content_rendered != "undefined", "the promise_content_rendered variable should be defined")
             await dom.window.promise_content_rendered;
             var child_length = dom.window.document.body.children.length;
             assert.equal(child_length, 4, "assert 4 children exist.")
@@ -166,5 +167,6 @@ describe('utils', function(){
             var excluded_part_was_rendered = (dom.window.document.querySelectorAll("img").length > 0); // excluded part generates the img tag
             assert.equal(excluded_part_was_rendered, false, "excluded part should not have been waited")
         })
+        it('should wait untill window is loaded to wait for the promise_content_rendered parameter') // relevant since dom returns before all script tags are evaluated
     })
 })
