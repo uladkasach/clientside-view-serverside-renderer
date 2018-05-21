@@ -8,7 +8,13 @@
         - `promise_content_rendered`
     - <s> supports certain content not rendering in server_side_rendering environment
         - `window.server_side_rendering=true` in server_side_rendering environment
-4. server and client rendering work together to mark which content is rendered (and only needs hydrating)
-    - server side loaded dom is marked
-    - server side loaded content is not re-rendered
-    - server side is only hydrated
+4. clientside-view-loader will handle rendering_location completely.
+    - for clientside rendererd dom, appends the `promise_not_server_rendered` promise to view creation chain
+    - for serverside rendered dom,
+        1. creates a unique id for the element
+            - must persist across duplicate loads
+            - must be created on server then found again on client
+                - can keep global variable, but how to know which dom generated it?
+            - must also be creatable on client
+        2. checks if element was rendered already based on the id
+        3. if rendered - hydrate. if not rendered - render.
