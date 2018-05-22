@@ -13,6 +13,17 @@ const renderer = new Renderer(original_server);
 /*
     if on render list, render the DOM
 */
+/*
+    // USE PROXY TO FORWARD HEADERS BACK AND FORTH - USE userResDecorator TO MODIFY (render) THE RESULT BEFORE RESPONDING TO USER
+
+    app.use('/proxy', proxy('www.google.com', {
+        userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
+            data = JSON.parse(proxyResData.toString('utf8'));
+            data.newProperty = 'exciting data';
+            return JSON.stringify(data);
+        }
+    }));
+*/
 app.get(render_list, (req, res)=>{
     console.log("rendering dom on server, url : " + req.url);
     renderer

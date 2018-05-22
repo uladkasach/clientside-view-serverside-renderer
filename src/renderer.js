@@ -72,7 +72,7 @@ Renderer.prototype = {
             runScripts : "dangerously", // enable loading of scripts - dangerously is fine since we are running code we wrote.
             includeNodeLocations: true, // make script tag console.error reporting positions accurate
             beforeParse : function(window) { // set a global variable to mark that the environment is a server_side_rendering environment
-                window.server_side_rendering = true;
+                window.currently_rendering_on_server = true;
                 window.promise_loaded = new Promise((resolve, reject)=>{ // add a global promise that resolves when window is loaded
                     window.addEventListener('load', resolve);
                 })
