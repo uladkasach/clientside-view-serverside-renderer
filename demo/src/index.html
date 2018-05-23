@@ -12,19 +12,14 @@
     </head>
     <body>
         <script>
-            load("./init/complex_header/index.js")
+            var promise_header = load("./init/complex_header/index.js")
                 .then((dom)=>{
-                    window.target_element = dom;
                     document.querySelector("html").appendChild(dom);
                 })
-        </script>
-        <div style = 'position:fixed; bottom:150; left:150;'>
-            rendered with <span id='rendering_location'> </span>
-        </div>
-        <script>
-            var server_side_rendering = window.rendered_with_server === true;
-            var rendering_status = (server_side_rendering)?"server" : "client";
-            document.getElementById("rendering_location").innerHTML = rendering_status;
+                .catch((error)=>{
+                    console.log(error);
+                })
+            if(typeof window.content_rendered_manager == "object") window.content_rendered_manager.wait_for(promise_header);
         </script>
     </body>
 </html>
