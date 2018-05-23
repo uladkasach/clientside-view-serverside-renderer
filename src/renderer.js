@@ -1,5 +1,6 @@
 const http = require('http');
 const jsdom = require("jsdom");
+const Dynamic_Serial_Promise_All = require("dynamic-serial-promise-all");
 
 var Renderer = function(original_server){
     this.original_server = original_server; // define original server
@@ -8,6 +9,16 @@ Renderer.prototype = {
     /*
         generate a promise which retreives the body of a url and renders the DOM of the body
     */
+    promise_serialized_render : async function(path){
+        // get the rendered dom
+        var dom = await this.promise_to_render(path);
+
+        // serialize the dom at this point
+        var serialization = dom.serialize();
+
+        // return the serialized rendered dom
+        return serialization;
+    },
     promise_to_render : async function(path){
         // retreive body
         var options = {
@@ -18,19 +29,25 @@ Renderer.prototype = {
         var body = await this.promise_to_get_body(options);
 
         // convert body into dom
-        var dom = this.parse_html_into_dom(body, this.original_server);
+        var dom = this.parse_html_into_dom(path, body, this.original_server);
 
         // wait untill window is loaded
         await dom.window.promise_loaded;
 
-        // wait untill a specifically named promise resolves
-        await dom.window.promise_content_rendered;
+        // wait untill all content render promises resolve; uses dynamic-serial-promise-all
+        await dom.window.content_rendered_manager.promise_all;
 
-        // serialize the dom at this point
-        var serialization = dom.serialize();
+        // set `currently_rendering_on_server` to false
+        dom.window.currently_rendering_on_server = false;
 
-        // return the serialized rendered dom
-        return serialization;
+        // set `rendered_on_server` to true
+        dom.window.rendered_on_server = true;
+
+        // clear the content_rendered_manager
+        delete dom.window.content_rendered_manager;
+
+        // return the dom
+        return dom;
     },
 
     /*
@@ -61,13 +78,16 @@ Renderer.prototype = {
     /*
         parse html into dom list and return the dom.
     */
-    parse_html_into_dom : function(html, original_server){
+    parse_html_into_dom : function(path, html, original_server){
         // normalize original server
         if(typeof original_server.protocol == "undefined") original_server.protocol = "http"; // default to http if not defined
 
+        // define the content_rendered_manager
+        var content_rendered_manager = new Dynamic_Serial_Promise_All();
+
         // define optiosn for jsdom
         var dom_options = {
-            url: original_server.protocol + "://" + original_server.host + ":" + original_server.port + "/",
+            url: original_server.protocol + "://" + original_server.host + ":" + original_server.port + "/" + path,
             resources: "usable", // load external resources
             runScripts : "dangerously", // enable loading of scripts - dangerously is fine since we are running code we wrote.
             includeNodeLocations: true, // make script tag console.error reporting positions accurate
@@ -76,6 +96,7 @@ Renderer.prototype = {
                 window.promise_loaded = new Promise((resolve, reject)=>{ // add a global promise that resolves when window is loaded
                     window.addEventListener('load', resolve);
                 })
+                window.content_rendered_manager = content_rendered_manager; // add the content_rendered_manager to enable client to easily define promises to wait for
             },
         };
 

@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <script src = '/node_modules/clientside-require/dist/bundle.js'></script>
+    </head>
+    <body>
+        <script>
+            load("./view/basic_client_render/index.js")
+                .then((dom)=>{
+                    document.querySelector("html").appendChild(dom);
+                })
+                .catch(()=>{})
+            load("./view/basic_server_render/index.js")
+                .then((dom)=>{
+                    document.querySelector("html").appendChild(dom);
+                })
+        </script>
+    </body>
+</html>
