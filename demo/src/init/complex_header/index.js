@@ -23,6 +23,6 @@ module.exports = (async function(){
             element_min_width : 140
         }
     }
-    var dom = await view_loader.load("clientside-view-responsive-header").build(build_options);
+    var dom = await view_loader.load("clientside-view-responsive-header").build(build_options, "server");
     return dom;
 })()
