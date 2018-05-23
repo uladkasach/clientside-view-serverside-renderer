@@ -1,0 +1,19 @@
+{
+    "left" : [
+        {
+            "description" : "go to home page",
+            "html" : "<img height='40px' src = '/src/init/simple_header/logo_gold_darker.png'>",
+            "src" : "/path/to/home.html"
+        }
+    ],
+    "right" : [
+        {
+            "text" : "Blog",
+            "src" : "/path/to/blog.html"
+        },
+        {
+            "html" : "<b>Login</b>",
+            "src" : "/path/to/loginpage.html"
+        }
+    ]
+}
