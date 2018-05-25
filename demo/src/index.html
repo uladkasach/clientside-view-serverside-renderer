@@ -21,13 +21,14 @@
                 })
         </script>
         <div style = 'position:absolute; bottom:150px; left:150px'>
-            Header rendered on <span id = 'render_location'>...<span>
+            Header rendered on <span id = 'header_render_location'> ... <span>
         </div>
         <script>
             promise_header_loaded.then(()=>{
+                if(window.currently_rendering_on_server) return;
                 var header_root = document.querySelector(".header_root");
                 var render_location = (header_root.getAttribute("rendered_on_server") == "true")? "server" : "client";
-                document.querySelector("#render_location").innerHTML = render_location;
+                document.querySelector("#header_render_location").innerHTML = render_location;
             })
         </script>
     </body>
