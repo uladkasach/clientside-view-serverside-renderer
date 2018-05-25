@@ -1,17 +1,6 @@
 # clientside-view-serverside-renderer
 This module makes it easy to setup a proxy server capable of rendering clientside content on the server side. When used in conjunction with the `clientside-view-loader`, changing client rendering to server rendering is as simple as adding the string `"server"` as a flag.
 
-##### Server Setup Example
-A rendering proxy server can be started with 5 lines of code:
-```js
-var Render_Server = require("clientside-view-serverside-renderer");
-var render_list = require("./render_list.json");
-var original_server = require("./original_server.json");
-var render_server = new Render_Server(render_list, original_server)
-render_server.start(8181);
-```
-where `render_list.json` contains an array of paths that the proxy should render on (e.g., `["/index.html", "/cart/display.html"]`) and `original_server.json` contains an object that defines the `protocol`, `host`, and `port` of the original server (e.g., `{protocol:"http", "host":"a.domain.com", port:"80"}`).
-
 ##### Usage Example
 The following example demonstrates how seamlessly this module enables rendering on the server.
 
@@ -24,6 +13,17 @@ The following example demonstrates how seamlessly this module enables rendering 
 ```js
     view_loader.load(path_to_view).build(build_options, "server");
 ```
+
+##### Server Setup Example
+A rendering proxy server can be started with 5 lines of code:
+```js
+var Render_Server = require("clientside-view-serverside-renderer");
+var render_list = require("./render_list.json");
+var original_server = require("./original_server.json");
+var render_server = new Render_Server(render_list, original_server)
+render_server.start(8181);
+```
+where `render_list.json` contains an array of paths that the proxy should render on (e.g., `["/index.html", "/cart/display.html"]`) and `original_server.json` contains an object that defines the `protocol`, `host`, and `port` of the original server (e.g., `{protocol:"http", "host":"a.domain.com", port:"80"}`).
 
 # Overview
 
@@ -58,7 +58,7 @@ The following example will demonstrate how seamlessly this module enables render
 ## Manual Usage
 This module can also be used manually. One must consider several border cases and constraints. There are several tools created by this module that facilitate overcoming these border cases.
 
-These border cases and constraints are outlined in the following [ Client-Side Usage Considerations]() section.
+These border cases and constraints are outlined in the following [ client-side usage considerations](#client-side-usage-considerations) section.
 
 # Components
 
@@ -80,7 +80,7 @@ The rendering service utilizes JSDOM as the headless browser. Rendering waits un
 Client-side developers must take care in considering three aspects to ensure ideal server-side rendering of client-side code. This module supports both a manual and a seamless integration. The manual integration requires the developers to consider these three aspects on their own. The seemless integration leverages the `clientside-view-loader` view library to automatically handle these considerations for them.
 
 
-### Duplicate Rendering
+### (1) Duplicate Rendering
 
 Special care must be considered to ensure that views that are not intended to be rendered on the server are not rendered by the server. Otherwise, certain views would be rendered on both the client and the server.
 
@@ -90,9 +90,9 @@ The `clientside-view-loader` module ensures that views intended to be rendered o
 ##### Manual Integration
 For manual integrations, the rendering service provisions the JSDOM rendering environment with the global property `currently_rendering_on_server`. Client-side JS should skip rendering any views ment to be rendered on the client when they see this property set to `true`.
 
-### Waiting for Asynchronous Rendering
+### (2) Waiting for Asynchronous Rendering
 
-As mentioned in the [rendering](#Rendering) section, the rendering service waits for a specific promise to resolve to ensure that all asynchronous code has rendered. This promise is generated through the `content_rendered_manager` object, provisioned in the rendering environment.
+As mentioned in the [rendering](#rendering) section, the rendering service waits for a specific promise to resolve to ensure that all asynchronous code has rendered. This promise is generated through the `content_rendered_manager` object, provisioned in the rendering environment.
 
 ##### Seamless Integration
 
@@ -109,7 +109,7 @@ if(typeof window.content_rendered_manager == "object")
 
 
 
-### Hydration
+### (3) Hydration
 
 Special care has to be taken by the client-side JS code as when the client receives the rendered DOM, any ["hydration"]() that the JS code conducts on the server will not be present on the client. Therefore, special care must be taken to hydrate any rendered DOM.
 
