@@ -1,13 +1,11 @@
 {
-  "name": "server",
-  "version": "1.1.0",
-  "description": "",
+  "name": "clientside-view-serverside-renderer",
+  "version": "1.0.0",
+  "description": "A serverside rendering module that supports seamless serverside rendering with clientside-view-loader",
   "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "directories": {
+    "test": "test"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "dynamic-serial-promise-all": "^1.0.0",
     "express": "^4.16.3",
@@ -16,5 +14,27 @@
   "devDependencies": {
     "jsdom": "^11.10.0",
     "mocha": "^5.2.0"
-  }
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uladkasach/clientside-view-serverside-renderer.git"
+  },
+  "keywords": [
+    "server",
+    "side",
+    "serverside",
+    "server-side",
+    "rendering",
+    "dom",
+    "view"
+  ],
+  "author": "uladkasach",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uladkasach/clientside-view-serverside-renderer/issues"
+  },
+  "homepage": "https://github.com/uladkasach/clientside-view-serverside-renderer#readme"
 }

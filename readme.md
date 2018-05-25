@@ -1,7 +1,16 @@
 # clientside-view-serverside-renderer
 This module makes it easy to setup a proxy server capable of rendering clientside content on the server side. When used in conjunction with the `clientside-view-loader`, changing client rendering to server rendering is as simple as adding the string `"server"` as a flag.
 
-##### Proxy Setup Example
+##### Server Setup Example
+A rendering proxy server can be started with 5 lines of code:
+```js
+var Render_Server = require("clientside-view-serverside-renderer");
+var render_list = require("./render_list.json");
+var original_server = require("./original_server.json");
+var render_server = new Render_Server(render_list, original_server)
+render_server.start(8181);
+```
+where `render_list.json` contains an array of paths that the proxy should render on (e.g., `["/index.html", "/cart/display.html"]`) and `original_server.json` contains an object that defines the `protocol`, `host`, and `port` of the original server (e.g., `{protocol:"http", "host":"a.domain.com", port:"80"}`).
 
 ##### Usage Example
 The following example demonstrates how seamlessly this module enables rendering on the server.
