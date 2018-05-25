@@ -1,6 +1,6 @@
 {
   "name": "clientside-view-serverside-renderer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A serverside rendering module that supports seamless serverside rendering with clientside-view-loader",
   "main": "src/index.js",
   "directories": {
@@ -9,10 +9,10 @@
   "dependencies": {
     "dynamic-serial-promise-all": "^1.0.0",
     "express": "^4.16.3",
-    "express-http-proxy": "^1.2.0"
+    "express-http-proxy": "^1.2.0",
+    "jsdom": "^11.10.0"
   },
   "devDependencies": {
-    "jsdom": "^11.10.0",
     "mocha": "^5.2.0"
   },
   "scripts": {
