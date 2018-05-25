@@ -34,6 +34,9 @@ Renderer.prototype = {
         // wait untill window is loaded
         await dom.window.promise_loaded;
 
+        // wait untill all clientside require loading has concluded, if clientside_require is defined
+        if(typeof dom.window.clientside_require == "object") await dom.window.clientside_require.promise_all;
+
         // wait untill all content render promises resolve; uses dynamic-serial-promise-all
         await dom.window.content_rendered_manager.promise_all;
 
@@ -106,6 +109,5 @@ Renderer.prototype = {
         // return dom
         return dom;
     },
-
 }
 module.exports = Renderer;
