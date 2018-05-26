@@ -19,8 +19,10 @@ module.exports = (async function(){
      var build_options = {
         structure : structure,
         style : {
-            element_min_width : 180,
-            element_min_width : 140
+            element : {
+                min_width :140,
+                max_width : 180,
+            }
         }
     }
     var dom = await view_loader.load("clientside-view-responsive-header").build(build_options, "server");
