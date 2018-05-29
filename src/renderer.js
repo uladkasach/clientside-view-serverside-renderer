@@ -40,6 +40,9 @@ Renderer.prototype = {
         // wait untill all content render promises resolve; uses dynamic-serial-promise-all
         await dom.window.content_rendered_manager.promise_all;
 
+        // remove all frames that clientside-require created (and was not able to remove since it was in jsdom environment)
+        if(typeof dom.window.frames_to_remove == "object") dom.window.frames_to_remove.forEach((frame)=>frame.remove());
+
         // set `currently_rendering_on_server` to false
         dom.window.currently_rendering_on_server = false;
 
