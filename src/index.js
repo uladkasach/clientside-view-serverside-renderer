@@ -3,6 +3,12 @@ const proxy = require('express-http-proxy');
 const Renderer = require('./renderer.js');
 
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p);
+  // application specific logging, throwing an error, or other logic here
+});
+
+
 var Render_Server = function(render_list, original_server){
     // define renderer
     this.renderer = new Renderer(original_server);
@@ -41,6 +47,11 @@ Render_Server.prototype = {
                 .promise_serialized_render(req.url)
                 .then((serialized_render)=>{
                     res.send(serialized_render);
+                })
+                .catch((error)=>{
+                    var message = "There was an error rendering the requested content. If this error does not occur in the browser, this is likely due to a discrepency between JSDOM and the browser. ";
+                    console.log(message);
+                    res.send(message);
                 })
         })
 
