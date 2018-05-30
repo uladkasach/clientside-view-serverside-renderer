@@ -49,7 +49,7 @@ Render_Server.prototype = {
                     res.send(serialized_render);
                 })
                 .catch((error)=>{
-                    var message = "There was an error rendering the requested content. If this error does not occur in the browser, this is likely due to a discrepency between JSDOM and the browser. ";
+                    var message = "There was an error rendering the requested content. If this error does not occur in the browser, it is either \n1. due to a discrepency between JSDOM and the browser \n2. due to hydration not being conducted on the server.";
                     console.log(message);
                     res.send(message);
                 })
